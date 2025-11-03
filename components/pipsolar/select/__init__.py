@@ -55,7 +55,7 @@ def ensure_option_map():
 # }
 
 # CONFIG_SCHEMA = cv.All(
-#     select.select_schema.extend(cv.COMPONENT_SCHEMA).extend(
+#     select.SELECT_SCHEMA.extend(cv.COMPONENT_SCHEMA).extend(
 #         {
 #             cv.GenerateID(): cv.declare_id(PipSolarSelect),
 #             cv.GenerateID(CONF_MODBUS_CONTROLLER_ID): cv.use_id(ModbusController),
@@ -85,13 +85,17 @@ TYPES = {
 }
 
 
-PIPSELECT_SCHEMA = select.select_schema.extend(
-    {
+PIPSELECT_SCHEMA = (
+    select.select_schema(PipsolarSelect)
+    .extend(
+        {
         cv.GenerateID(): cv.declare_id(PipsolarSelect),
         cv.Optional(CONF_OPTIONSMAP): ensure_option_map(),
         cv.Optional(CONF_STATUSMAP): ensure_option_map(),
     }
-).extend(cv.COMPONENT_SCHEMA)
+    )
+    .extend(cv.COMPONENT_SCHEMA)
+)
 
 _UNDEF = object()
 
